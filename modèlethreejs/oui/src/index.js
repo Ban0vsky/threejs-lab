@@ -166,6 +166,23 @@ const loop = () =>
         camera.position.z -= (Math.cos(camera.rotation.y)/50)
         camera.position.y += (Math.tan(camera.rotation.x)/50)
     } 
+    if(moveq == 1)
+    {
+        camera.position.x += (Math.sin(-camera.rotation.y - Math.PI/2)/50)
+        camera.position.z += (-Math.cos(-camera.rotation.y - Math.PI/2)/50)
+    } 
+    if(moves == 1)
+    {
+        camera.position.x  += (Math.sin(camera.rotation.y)/50)
+        camera.position.z += (Math.cos(camera.rotation.y)/50)
+        camera.position.y -= (Math.tan(camera.rotation.x)/50)
+    } 
+    if(moved == 1)
+    {
+        camera.position.x += (Math.sin(-camera.rotation.y + Math.PI/2)/50)
+        camera.position.z += (-Math.cos(-camera.rotation.y + Math.PI/2)/50)
+    } 
+    console.log(camera.position)
     // Renderer
     renderer.render(scene, camera)
 }
@@ -193,6 +210,54 @@ let movez = 0
                 if(event.key == 'z')
                 {
                     movez = 0
+                }
+            })
+
+        } 
+    })
+    let moveq = 0
+
+    window.addEventListener('keydown', (event) =>
+    {
+        if(event.key == 'q')
+        {
+            moveq = 1
+            window.addEventListener('keyup', (event) => {
+                if(event.key == 'q')
+                {
+                    moveq = 0
+                }
+            })
+
+        } 
+    })
+    let moves = 0
+
+    window.addEventListener('keydown', (event) =>
+    {
+        if(event.key == 's')
+        {
+            moves = 1
+            window.addEventListener('keyup', (event) => {
+                if(event.key == 's')
+                {
+                    moves = 0
+                }
+            })
+
+        } 
+    })
+    let moved = 0
+
+    window.addEventListener('keydown', (event) =>
+    {
+        if(event.key == 'd')
+        {
+            moved = 1
+            window.addEventListener('keyup', (event) => {
+                if(event.key == 'd')
+                {
+                    moved = 0
                 }
             })
 
