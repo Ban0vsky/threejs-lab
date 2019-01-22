@@ -57,7 +57,7 @@ const scene = new THREE.Scene()
 /**
  * Camera
  */
-const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height)
+const camera = new THREE.PerspectiveCamera(35, sizes.width / sizes.height)
 camera.position.z = 3
 scene.add(camera)
 
@@ -140,51 +140,6 @@ sunLight.shadow.camera.bottom = - 1.20
 sunLight.shadow.camera.left = - 1.20
 scene.add(sunLight)
 
-// /**
-//  * Shader
-//  */
-// const shaderGeometry = new THREE.SphereGeometry(1.5, 45, 45)
-// const shaderMaterial = new THREE.ShaderMaterial({
-//     uniforms:
-//     {
-//         uTime: { value: 0 }
-//     },
-//     vertexShader:
-//     `
-//         uniform float uTime;
-
-//         varying vec3 vNormal;
-//         varying float vOffset;
-
-//         void main()
-//         {
-//             vec4 modelPosition = vec4(position, 1.0);
-            
-//             float offset = 0.0;
-//             offset += sin(modelPosition.y * 30.0 + uTime * 0.03);
-//             offset += sin(uv.x * 3.14 * 2.0);
-//             modelPosition.xyz += normal * offset * 0.2;
-
-//             vNormal = normal;
-//             vOffset = offset;
-
-//             gl_Position = projectionMatrix * viewMatrix * modelPosition;
-//         }
-//     `,
-//     fragmentShader:
-//     `
-//         varying vec3 vNormal;
-//         varying float vOffset;
-        
-//         void main()
-//         {
-//             vec3 color = vNormal + vec3(vOffset * 0.5);
-//             gl_FragColor = vec4(color, 1.0);
-//         }
-//     `,
-// })
-// const shaderMesh = new THREE.Mesh(shaderGeometry, shaderMaterial)
-// scene.add(shaderMesh)
 
 /**
  * Renderer
@@ -197,21 +152,20 @@ document.body.appendChild(renderer.domElement)
 /**
  * Loop
  */
+
 const loop = () =>
 {
     window.requestAnimationFrame(loop)
-
-    // // Update shader
-    // shaderMaterial.uniforms.uTime.value += 1
-
-    // // Update house
-    // house.rotation.y += 0.003
-
     // Update camera
-    camera.position.x = cursor.x * 3
-    camera.position.y = - cursor.y * 3
-    camera.lookAt(new THREE.Vector3())
-
+    camera.rotation.x = - cursor.y *5
+    camera.rotation.order = 'YXZ'
+    camera.rotation.y = - cursor.x *15
+    if(movez == 1)
+    {
+        camera.position.x  -= (Math.sin(camera.rotation.y)/50)
+        camera.position.z -= (Math.cos(camera.rotation.y)/50)
+        camera.position.y += (Math.tan(camera.rotation.x)/50)
+    } 
     // Renderer
     renderer.render(scene, camera)
 }
@@ -227,3 +181,21 @@ loop()
 //         console.log('dispose')
 //     })
 // }
+
+let movez = 0
+
+    window.addEventListener('keydown', (event) =>
+    {
+        if(event.key == 'z')
+        {
+            movez = 1
+            window.addEventListener('keyup', (event) => {
+                if(event.key == 'z')
+                {
+                    movez = 0
+                }
+            })
+
+        } 
+    })
+  
