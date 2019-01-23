@@ -1,6 +1,6 @@
 import './css/style.styl'
 import grassTextureSource from './images/textures/house/grass.jpg'
-
+import secondTextureSource from './images/textures/house/noUsed.jpg'
 import * as THREE from 'three'
 import Planet from './js/Planet.js'
 
@@ -8,7 +8,7 @@ import Planet from './js/Planet.js'
  * Textures
  */
 const textureLoader = new THREE.TextureLoader()
-
+const noUsed = textureLoader.load(secondTextureSource)
 const grassTexture = textureLoader.load(grassTextureSource)
 grassTexture.wrapS = THREE.RepeatWrapping
 grassTexture.wrapT = THREE.RepeatWrapping
@@ -57,23 +57,25 @@ const scene = new THREE.Scene()
 /**
  * Camera
  */
-const camera = new THREE.PerspectiveCamera(35, sizes.width / sizes.height)
-camera.position.z = 3
+const camera = new THREE.PerspectiveCamera(50, sizes.width / sizes.height)
+camera.position.z = 0.019
+camera.position.y = 0.1
+camera.position.x = 0.02
 scene.add(camera)
 
 /**
  * Planet
  */
-const planet = new Planet({
-    textureLoader: textureLoader
-})
-scene.add(planet.container)
+// const planet = new Planet({
+//     textureLoader: textureLoader
+// })
+// scene.add(planet.container)
 
 // /**
-//  * House
+//  * cabin
 //  */
-// const house = new THREE.Object3D()
-// scene.add(house)
+const cabin = new THREE.Object3D()
+scene.add(cabin)
 
 // const walls = new THREE.Mesh(
 //     new THREE.BoxGeometry(1.5, 1, 1.5),
@@ -81,16 +83,42 @@ scene.add(planet.container)
 // )
 // walls.castShadow = true
 // walls.receiveShadow = true
-// house.add(walls)
+// cabin.add(walls)
 
-// const floor = new THREE.Mesh(
-//     new THREE.PlaneGeometry(4, 4),
-//     new THREE.MeshStandardMaterial({ metalness: 0.3, roughness: 0.8, side: THREE.DoubleSide, map: grassTexture })
-// )
-// floor.receiveShadow = true
-// floor.rotation.x = - Math.PI * 0.5
-// floor.position.y = - 0.5
-// house.add(floor)
+const floor = new THREE.Mesh(
+    new THREE.PlaneGeometry(1,2.5),
+    new THREE.MeshStandardMaterial({ metalness: 0.3, roughness: 0.8, side: THREE.DoubleSide, map: grassTexture })
+)
+floor.receiveShadow = true
+floor.rotation.x = - Math.PI * 0.5
+floor.position.x = 0
+floor.position.y = -0.30
+floor.position.z = 0
+cabin.add(floor)
+
+const Rwall = new THREE.Mesh(
+    new THREE.PlaneGeometry(1,2.5),
+    new THREE.MeshStandardMaterial({ metalness: 0.3, roughness: 0.8, side: THREE.DoubleSide, map: noUsed })
+)
+Rwall.receiveShadow = true
+Rwall.rotation.x = - Math.PI * 0.5
+Rwall.rotation.y = - Math.PI * 0.5
+Rwall.position.x = 0.15
+floor.position.y = 0
+
+Rwall.position.z = 0
+cabin.add(Rwall)
+
+const Lwall = new THREE.Mesh(
+    new THREE.PlaneGeometry(1,2.5),
+    new THREE.MeshStandardMaterial({ metalness: 0.3, roughness: 0.8, side: THREE.DoubleSide, map: noUsed })
+)
+Lwall.rotation.x = - Math.PI * 0.5
+Lwall.rotation.y = - Math.PI * 0.5
+Lwall.receiveShadow = true
+Lwall.position.x = -0.15
+Lwall.position.z = 0
+cabin.add(Lwall)
 
 // for(let i = 0; i < 50; i++)
 // {
@@ -105,7 +133,7 @@ scene.add(planet.container)
 //     bush.position.y = - 0.5 + radius * 0.5
 //     bush.castShadow = true
 //     bush.receiveShadow = true
-//     house.add(bush)
+//     cabin.add(bush)
 // }
 
 // // Roof
@@ -116,15 +144,15 @@ scene.add(planet.container)
 // roof.position.y = 0.5 + 0.25
 // roof.rotation.y = Math.PI * 0.25
 // roof.castShadow = true
-// house.add(roof)
+// cabin.add(roof)
 
 /**
  * Lights
  */
-// const doorLight = new THREE.PointLight()
-// doorLight.position.x = - 1.02
-// doorLight.castShadow = true
-// house.add(doorLight)
+const doorLight = new THREE.PointLight()
+doorLight.position.x = - 1.02
+doorLight.castShadow = true
+cabin.add(doorLight)
 
 const ambientLight = new THREE.AmbientLight(0xffffff, 0.1)
 scene.add(ambientLight)
@@ -157,32 +185,32 @@ const loop = () =>
 {
     window.requestAnimationFrame(loop)
     // Update camera
-    camera.rotation.x = - cursor.y *5
+    camera.rotation.x = - cursor.y *3.8
     camera.rotation.order = 'YXZ'
     camera.rotation.y = - cursor.x *15
     if(movez == 1)
     {
-        camera.position.x  -= (Math.sin(camera.rotation.y)/50)
-        camera.position.z -= (Math.cos(camera.rotation.y)/50)
-        camera.position.y += (Math.tan(camera.rotation.x)/50)
+        camera.position.x  -= (Math.sin(camera.rotation.y)/350)
+        camera.position.z -= (Math.cos(camera.rotation.y)/350)
+        camera.position.y += (Math.tan(camera.rotation.x)/350)
     } 
     if(moveq == 1)
     {
-        camera.position.x += (Math.sin(-camera.rotation.y - Math.PI/2)/50)
-        camera.position.z += (-Math.cos(-camera.rotation.y - Math.PI/2)/50)
+        camera.position.x += (Math.sin(-camera.rotation.y - Math.PI/2)/350)
+        camera.position.z += (-Math.cos(-camera.rotation.y - Math.PI/2)/350)
     } 
     if(moves == 1)
     {
-        camera.position.x  += (Math.sin(camera.rotation.y)/50)
-        camera.position.z += (Math.cos(camera.rotation.y)/50)
-        camera.position.y -= (Math.tan(camera.rotation.x)/50)
+        camera.position.x  += (Math.sin(camera.rotation.y)/350)
+        camera.position.z += (Math.cos(camera.rotation.y)/350)
+        camera.position.y -= (Math.tan(camera.rotation.x)/350)
     } 
     if(moved == 1)
     {
-        camera.position.x += (Math.sin(-camera.rotation.y + Math.PI/2)/50)
-        camera.position.z += (-Math.cos(-camera.rotation.y + Math.PI/2)/50)
+        camera.position.x += (Math.sin(-camera.rotation.y + Math.PI/2)/350)
+        camera.position.z += (-Math.cos(-camera.rotation.y + Math.PI/2)/350)
     } 
-    console.log(camera.position)
+    // console.log(camera.position)
     // Renderer
     renderer.render(scene, camera)
 }
@@ -264,3 +292,5 @@ let movez = 0
         } 
     })
   
+
+    console.log(camera.position)
