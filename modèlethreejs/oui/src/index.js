@@ -3,6 +3,7 @@ import grassTextureSource from './images/textures/house/grass.jpg'
 import secondTextureSource from './images/textures/house/noUsed.jpg'
 import * as THREE from 'three'
 import Planet from './js/Planet.js'
+const human = 1 /*black mirror wow */
 
 /**
  * Textures
@@ -59,7 +60,7 @@ const scene = new THREE.Scene()
  */
 const camera = new THREE.PerspectiveCamera(50, sizes.width / sizes.height)
 camera.position.z = 0.019
-camera.position.y = 0.1
+camera.position.y = 0.3
 camera.position.x = 0.02
 scene.add(camera)
 
@@ -86,7 +87,7 @@ scene.add(cabin)
 // cabin.add(walls)
 
 const floor = new THREE.Mesh(
-    new THREE.PlaneGeometry(1,2.5),
+    new THREE.PlaneGeometry(human*1.5,human * 2.5),
     new THREE.MeshStandardMaterial({ metalness: 0.3, roughness: 0.8, side: THREE.DoubleSide, map: grassTexture })
 )
 floor.receiveShadow = true
@@ -97,26 +98,26 @@ floor.position.z = 0
 cabin.add(floor)
 
 const Rwall = new THREE.Mesh(
-    new THREE.PlaneGeometry(1,2.5),
+    new THREE.PlaneGeometry(human*1.5,human * 2.5),
     new THREE.MeshStandardMaterial({ metalness: 0.3, roughness: 0.8, side: THREE.DoubleSide, map: noUsed })
 )
 Rwall.receiveShadow = true
 Rwall.rotation.x = - Math.PI * 0.5
 Rwall.rotation.y = - Math.PI * 0.5
-Rwall.position.x = 0.15
+Rwall.position.x = 0.25
 floor.position.y = 0
 
 Rwall.position.z = 0
 cabin.add(Rwall)
 
 const Lwall = new THREE.Mesh(
-    new THREE.PlaneGeometry(1,2.5),
+    new THREE.PlaneGeometry(human*1.5,human * 2.5),
     new THREE.MeshStandardMaterial({ metalness: 0.3, roughness: 0.8, side: THREE.DoubleSide, map: noUsed })
 )
 Lwall.rotation.x = - Math.PI * 0.5
 Lwall.rotation.y = - Math.PI * 0.5
 Lwall.receiveShadow = true
-Lwall.position.x = -0.15
+Lwall.position.x = -0.25
 Lwall.position.z = 0
 cabin.add(Lwall)
 
@@ -192,7 +193,7 @@ const loop = () =>
     {
         camera.position.x  -= (Math.sin(camera.rotation.y)/350)
         camera.position.z -= (Math.cos(camera.rotation.y)/350)
-        camera.position.y += (Math.tan(camera.rotation.x)/350)
+        // camera.position.y += (Math.tan(camera.rotation.x)/350)
     } 
     if(moveq == 1)
     {
@@ -203,7 +204,7 @@ const loop = () =>
     {
         camera.position.x  += (Math.sin(camera.rotation.y)/350)
         camera.position.z += (Math.cos(camera.rotation.y)/350)
-        camera.position.y -= (Math.tan(camera.rotation.x)/350)
+        // camera.position.y -= (Math.tan(camera.rotation.x)/350)
     } 
     if(moved == 1)
     {
